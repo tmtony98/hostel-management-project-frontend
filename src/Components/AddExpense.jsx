@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { BASEURL } from "../services/baseUrl";
 
 function AddExpense() {
   //js goes here
@@ -12,35 +13,46 @@ function AddExpense() {
     waterBill: "",
     messBill: "",
     staffSalary: "",
-    month: "",
+    selectedMonth: "",
   });
+
   const navigate = useNavigate();
+
+  const handleDateChange = (e) => {
+  //  e.preventDefault();
+    const selectedDate = e.target.value;
+    // Extract the month name from the selected date
+    const selectedMonth = new Date(selectedDate).toLocaleString("default", {
+      month: "long",
+    });
+    setExpenseData({ ...expenseData, selectedMonth });
+    //console.log(selectedDate);
+    console.log(expenseData);
+ //   console.log(requestData);
+  };
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // Regular expression to match the YYYY-MM format
-    // const monthRegex = /^\d{4}-(0[1-9]|1[0-2])$/;
-
-    // Update the state if it's a valid number
     setExpenseData({
       ...expenseData,
       [name]: value,
     });
 
-    console.log(expenseData);
+    // console.log(expenseData);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Make a POST request to store form data in JSON Server
-      const res = await axios.post(
-        "http://localhost:5000/expense/add",
-        expenseData
-      );
+      const res = await axios.post(`${BASEURL}/expense/add`, expenseData);
       // console.log(res.status);
       console.log(res.data);
       if (res.status === 200) {
-        alert(`Details of month ${expenseData.month} Added Successfully!`);
+        alert(
+          `Details of month ${expenseData.selectedMonth} Added Successfully!`
+        );
         console.log(res);
 
         navigate("/expenses");
@@ -148,7 +160,7 @@ function AddExpense() {
                   </div>
                 </div>
               </div>
-              {/* 3 rd row  */}
+              {/*3 rd row*/}
               <div className="g-3 row">
                 {/* month */}
                 <div className="col-sm-6">
@@ -159,9 +171,9 @@ function AddExpense() {
                     </label>
                     <input
                       type="month"
-                      name="month"
-                      value={expenseData.month}
-                      onChange={handleInputChange}
+                      name="selectedDate"
+                      value={expenseData.selectedDate}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputdate"
                       aria-describedby="roomHelp"

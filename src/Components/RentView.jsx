@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASEURL } from "../services/baseUrl";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Sidebar from "./Sidebar";
 
 function RentView() {
   //js fn 
@@ -22,6 +23,7 @@ const [rentData,setRentData]= useState([])
   };
   useEffect(() => {
     fetchData();
+   // console.log(rentData);
   }, []);
 
   //delete rent 
@@ -46,7 +48,15 @@ const [rentData,setRentData]= useState([])
    };
   return (
     <>
-      <div className="div mt-5 p-1">
+
+<div className="container-fluid">
+        <div className="row">
+          <div className="col-lg-2 col-md-4">
+            <Sidebar />
+          </div>
+          <div className="col-lg-10 ">
+           
+          <div className="div mt-5 p-1">
         {/*----header-----*/}
 
         <div className="heading d-flex justify-content-between">
@@ -55,7 +65,7 @@ const [rentData,setRentData]= useState([])
 
           </div>
          <Link to={"/addrent"}> <button className="btn px-4 py-2 btn-success">
-                    Add Rent{" "}
+                    Add New Rent Entry{" "}
                   </button>{" "}</Link>
         </div>
         {/*----cards-----*/}
@@ -115,7 +125,7 @@ const [rentData,setRentData]= useState([])
                     <td>ROOM NO</td>
                     <td>MONTH</td>
                     <td> AMOUNT </td>
-                    <td> STATUS</td>
+                    {/* <td> STATUS</td> */}
                     <td>ACTIONS</td>
                   </tr>
                 </thead>
@@ -128,7 +138,7 @@ const [rentData,setRentData]= useState([])
                       <td>{item.email}</td>
                       <td>{item.number}</td>
                       <td>{item.room}</td>
-                      <td>{item.month}</td>
+                      <td>{item.selectedMonth}</td>
                       <td>{item.rentAmount}</td>
                       <td>{item.rentStatus}</td>
                       <td>
@@ -146,6 +156,13 @@ const [rentData,setRentData]= useState([])
               </table>
         </div>
       </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    
     
     </>
   );

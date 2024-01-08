@@ -88,8 +88,12 @@ import Modal from 'react-bootstrap/Modal';
                       <td>{item.waterBill}</td>
                       <td>{item.messBill}</td>
                       <td>{item.staffSalary}</td>
-                     <td>{item.month}</td>
+                     <td>{item.selectedMonth}</td>
                       <td>
+                     
+                      {/* <Link to={`/expenses/edit/${item._id}`}> <button  className="btn btn-secondary ">
+                        <i class="fa-solid fa-user-pen"></i>
+                        </button></Link> */}
                         <button
                           onClick= 
                           {() => deleteUser(item._id)}

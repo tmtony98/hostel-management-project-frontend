@@ -21,13 +21,32 @@ function Adduser() {
   //
   const navigate = useNavigate();
   //
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setPeopleData({
-      ...peopleData,
-      [name]: value,
-    });
+  const handleDateChange = (event) => {
+    const { name, value } = event.target;
+
+    if (name === 'joinedDate') {
+      // Parse the selected date
+      const parsedDate = new Date(value);
+
+      // Format the date as DD-MM-YYYY
+      const formattedDate = parsedDate.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
+
+      // Update the state with the formatted date
+      setPeopleData({ ...peopleData, [name]: formattedDate });
+    } else {
+      // For other fields, update the state directly
+      setPeopleData({ ...peopleData, [name]: value });
+    }
   };
+
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setPeopleData({...peopleData,[name]: value});
+  // };
 
   const clearData = (peopleData) => {
     // alert("cancel data")
@@ -96,7 +115,7 @@ function Adduser() {
                       type="text"
                       name="name"
                       value={peopleData.name}
-                      onChange={handleInputChange}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputname"
                       aria-describedby="nameHelp"
@@ -114,7 +133,7 @@ function Adduser() {
                      
                       name="number"
                       value={peopleData.number}
-                      onChange={handleInputChange}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputno"
                     />
@@ -134,7 +153,7 @@ function Adduser() {
                       type="email"
                       name="email"
                       value={peopleData.email}
-                      onChange={handleInputChange}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputemail"
                     />
@@ -151,7 +170,7 @@ function Adduser() {
                       type="text"
                       name="room"
                       value={peopleData.room}
-                      onChange={handleInputChange}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputroom"
                       aria-describedby="roomHelp"
@@ -173,7 +192,7 @@ function Adduser() {
                       type="date"
                       name="joinedDate"
                       value={peopleData.joinedDate}
-                      onChange={handleInputChange}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputdate"
                       aria-describedby="roomHelp"
@@ -191,7 +210,7 @@ function Adduser() {
                       type="number"
                       name="Rent"
                       value={peopleData.Rent}
-                      onChange={handleInputChange}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputdate"
                       aria-describedby="roomHelp"

@@ -1,67 +1,72 @@
-import React from 'react'
-import { useState,  } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router';
-
+import React from "react";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 function AddRent() {
-    //js code goes here
-    const [rentData, setRentData] = useState({
-        id: "",
-        name: "",
-        email: "",
-        number: "",
-        room: "",
-        month:"",
-        rentAmount:"",
-        rentStatus:""
+  //js code goes here
+  const [rentData, setRentData] = useState({
+    id: "",
+    name: "",
+    email: "",
+    number: "",
+    room: "",
+    selectedMonth: "",
+    rentAmount: "",
+    rentStatus: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleDateChange = (e) => {
+    //  e.preventDefault();
+      const selectedDate = e.target.value;
+      // Extract the month name from the selected date
+      const selectedMonth = new Date(selectedDate).toLocaleString("default", {
+        month: "long",
       });
+      setRentData({ ...rentData, selectedMonth });
+      //console.log(selectedDate);
+      console.log(rentData);
+   //   console.log(requestData);
+    };
+  
 
-      const navigate =useNavigate()
-      const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setRentData({
-          ...rentData,
-          [name]:value,
-          
-        });
-        console.log(rentData);
-      };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRentData({
+      ...rentData,
+      [name]: value,
+    });
+    console.log(rentData);
+  };
 
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          // Make a POST request to store form data in JSON Server
-         const res = await axios.post("http://localhost:5000/rent", rentData);
-         // console.log(res.status);
-          console.log(res.data);
-          if(res.status===200){
-            alert(`Details of ${rentData.name} Added Successfully!`);
-             console.log(res)
-      
-             navigate("/dashboard")
-          }else if(res.status===404){
-           alert(res.data);
-    
-          }
-          //  handle success message goes here
-          
-        ;
-    
-        } catch (error) {
-          // Handle errors
-          alert("user already exists")
-          console.error("Error :", error);
-        }
-    
-      };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Make a POST request to store form data in JSON Server
+      const res = await axios.post("http://localhost:5000/rent", rentData);
+      // console.log(res.status);
+      console.log(res.data);
+      if (res.status === 200) {
+        alert(`Details of ${rentData.name} Added Successfully!`);
+        console.log(res);
 
-      
+        navigate("/rentlist");
+      } else if (res.status === 404) {
+        alert(res.data);
+      }
+      //  handle success message goes here
+    } catch (error) {
+      // Handle errors
+      alert("user already exists");
+      console.error("Error :", error);
+    }
+  };
 
   return (
-   <>
-
-   <div className="container-fluid">
+    <>
+      <div className="container-fluid">
         <div className="row  ">
           <h1
             style={{ marginBottom: "-50px", paddingTop: "100px" }}
@@ -102,7 +107,6 @@ function AddRent() {
                     </label>
                     <input
                       placeholder="eg : 9526XXXXXX"
-                     
                       name="number"
                       value={rentData.number}
                       onChange={handleInputChange}
@@ -114,7 +118,7 @@ function AddRent() {
               </div>
               {/* 2nd row */}
               <div className="g-2 row">
-               <div className="col-sm-6">
+                <div className="col-sm-6">
                   {/* email */}
                   <div class=" mb-3">
                     <label for="exampleInputemail" class="form-label">
@@ -149,7 +153,6 @@ function AddRent() {
                     />
                   </div>
                 </div>
-               
               </div>
               {/* 3 rd row  */}
               <div className="g-3 row">
@@ -162,9 +165,9 @@ function AddRent() {
                     </label>
                     <input
                       type="month"
-                      name="month"
-                      value={rentData.month}
-                      onChange={handleInputChange}
+                      name="selectedDate"
+                      value={rentData.selectedDate}
+                      onChange={handleDateChange}
                       class="form-control"
                       id="exampleInputdate"
                       aria-describedby="roomHelp"
@@ -192,25 +195,21 @@ function AddRent() {
               </div>
               <div className="div py-2">
                 <button
-                 onClick={handleSubmit}
+                  onClick={handleSubmit}
                   type="submit"
                   class="btn btn-primary"
                 >
                   Submit
                 </button>
-                <button class="btn mx-3  btn-danger">
-                  Cancel
-                </button>
+                <button class="btn mx-3  btn-danger">Cancel</button>
               </div>
             </form>
           </div>
           <div className="col-lg-3"></div>
         </div>
-       
       </div>
-   
-   </>
-  )
+    </>
+  );
 }
 
-export default AddRent
+export default AddRent;

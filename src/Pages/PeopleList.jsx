@@ -8,24 +8,39 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import { useNavigate } from "react-router-dom";
 
 
 function PeopleList() {
   const [data, setData] = useState([]);
- 
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+const  navigate = useNavigate()
 
   //api call fn
   const fetchData = async () => {
     try {
       const response = await axios.get(`${BASEURL}/users/list`);
       setData(response.data);
+      setFilteredData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
   useEffect(() => {
     fetchData();
+    
   }, []);
+
+  useEffect(() => {
+    console.log(searchQuery);
+    // Filter the data based on the search query
+    const filtered = data.filter(item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [searchQuery, data]);
 
 
 
@@ -67,10 +82,11 @@ function PeopleList() {
                 <h2 className=" text-info ">Residents List</h2>
                 <div class="form-floating">
                   <input
+                  value={searchQuery}
+                  onChange={(e)=>setSearchQuery(e.target.value)}
                     type="text"
                     class="form-control"
                     id="floatinguser"
-                    placeholder="Password"
                   />
                   <label for="floatinguser">
                     <i class="fa-solid mx-2 fa-magnifying-glass"></i>Search by
@@ -93,12 +109,12 @@ function PeopleList() {
                     <td>MOB NO</td>
                     <td>ROOM NO</td>
                     <td>JOIN DATE</td>
-                    <td>RENT </td>
+                    <td>RENT AMOUNT </td>
                     <td>ACTIONS</td>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((item,index) => (
+                  {filteredData.map((item,index) => (
                     <tr key={index}>
                       <td>{index+1}</td>
                       <td>{item.name}</td>
@@ -108,10 +124,13 @@ function PeopleList() {
                       <td>{item.joinedDate}</td>
                       <td>{item.Rent}</td>
                       <td>
+                       <Link to={`/user/edit/${item._id}`}> <button  className="btn btn-secondary ">
+                        <i class="fa-solid fa-user-pen"></i>
+                        </button></Link>
                         <button
                           onClick=
                           {()=>deleteUser(item._id)}
-                          className="btn btn-danger mx-2">
+                          className="btn btn-danger mx-3">
                           <i class="fa-solid fa-trash"></i>
                         </button>
                       </td>
